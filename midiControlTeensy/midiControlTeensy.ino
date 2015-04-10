@@ -2,6 +2,9 @@
 
 //int gatePin = 2;
 //int pwmPin = 4; # using this as our noise generator for now
+int secondPinArduino = 2;
+int thirdPinArduino = 8;
+int fourthPinAruino = 7;
 int secondCow = 25;
 int lastBong = 24;
 int rimBong = 23;
@@ -69,11 +72,31 @@ void setup() {
   noise.generate(2);
   pinMode(secondCow, OUTPUT);
   digitalWrite(secondCow, LOW);
+
   pinMode(lastBong, OUTPUT);
+  digitalWrite(lastBong, LOW);
+
   pinMode(rimBong, OUTPUT);
+  digitalWrite(rimBong, LOW);
+
   pinMode(centerBong, OUTPUT);
+  digitalWrite(centerBong, LOW);
+
   pinMode(firstCow, OUTPUT);
+  digitalWrite(firstCow, LOW);
+
   pinMode(rightBong, OUTPUT);
+  digitalWrite(rightBong, LOW);
+
+  pinMode(secondPinArduino, OUTPUT);
+  digitalWrite(secondPinArduino, LOW);
+
+  pinMode(thirdPinArduino, OUTPUT);
+  digitalWrite(thirdPinArduino, LOW);
+
+  pinMode(fourthPinAruino, OUTPUT);
+  digitalWrite(fourthPinAruino, LOW);
+
   usbMIDI.setHandleNoteOff(OnNoteOff);
   usbMIDI.setHandleNoteOn(OnNoteOn);
   analogWriteResolution(12);  
@@ -83,7 +106,28 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   usbMIDI.read();
-  noise.generate(2);
+  //noise.generate(2);
+  
+  if (touchRead(0) > 3000) {
+    digitalWrite(secondPinArduino, HIGH);
+  }
+  else {
+    digitalWrite(secondPinArduino, LOW);
+  }
+  if (touchRead(1) > 3000) {
+    digitalWrite(thirdPinArduino, HIGH);
+  }
+  else {
+    digitalWrite(thirdPinArduino, LOW);
+  }
+
+  if (touchRead(3) > 5000) {
+    digitalWrite(fourthPinAruino, HIGH);
+  }
+  else {
+    digitalWrite(fourthPinAruino, LOW);
+  }
+  
   //long start = millis();
   // throw a touchRead(pin) in here https://www.kickstarter.com/projects/paulstoffregen/teensy-30-32-bit-arm-cortex-m4-usable-in-arduino-a/posts (maybe control oscilator?)
   //long total1 =  cs_4_2.capacitiveSensor(30);
