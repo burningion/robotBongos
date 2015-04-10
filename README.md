@@ -13,6 +13,3 @@ Raspberry Pi is controlled with OSC via Python script that takes the first midi 
 
 
 
-
-
-
