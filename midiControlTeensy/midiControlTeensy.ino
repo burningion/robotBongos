@@ -12,6 +12,9 @@ int centerBong = 22;
 int rightBong = 21;
 int firstCow = 20;
 
+
+bool touches[] = {false, false, false}; // initialize array for all touchy plants, default to off
+
 noise noise(4);
 
 void OnNoteOn(byte channel, byte note, byte velocity) {
@@ -100,7 +103,7 @@ void setup() {
   usbMIDI.setHandleNoteOff(OnNoteOff);
   usbMIDI.setHandleNoteOn(OnNoteOn);
   analogWriteResolution(12);  
-  Serial.begin(9600);
+  //Serial.begin(9600);
 }
  
 void loop() {
@@ -108,24 +111,49 @@ void loop() {
   usbMIDI.read();
   //noise.generate(2);
   
-  if (touchRead(0) > 3000) {
+  if (touchRead(0) > 3500) {
     digitalWrite(secondPinArduino, HIGH);
+    if (touches[0] == false) {  // do this so we don't send a bunch of notes when we're being touched.
+      usbMIDI.sendNoteOn(110, 100, 2);
+      touches[0] == true;
+    }
   }
   else {
+    if (touches[0] == true) {
+      usbMIDI.sendNoteOff(110, 100, 2);
+      touches[0] = false;
+    }
     digitalWrite(secondPinArduino, LOW);
   }
-  if (touchRead(1) > 3000) {
+  
+  if (touchRead(1) > 3500) {
     digitalWrite(thirdPinArduino, HIGH);
+    if (touches[1] == false) {  // do this so we don't send a bunch of notes when we're being touched.
+      usbMIDI.sendNoteOn(113, 100, 2);
+      touches[1] == true;
+    }
   }
   else {
     digitalWrite(thirdPinArduino, LOW);
+     if (touches[1] == true) {
+      usbMIDI.sendNoteOff(113, 100, 2);
+      touches[1] = false;
+    }
   }
 
   if (touchRead(3) > 5000) {
     digitalWrite(fourthPinAruino, HIGH);
+    if (touches[2] == false) {  // do this so we don't send a bunch of notes when we're being touched.
+      usbMIDI.sendNoteOn(112, 100, 2);
+      touches[2] == true;
+    }
   }
   else {
     digitalWrite(fourthPinAruino, LOW);
+    if (touches[2] == true) {
+      usbMIDI.sendNoteOff(112, 100, 2);
+      touches[2] = false;
+    }
   }
   
   //long start = millis();
