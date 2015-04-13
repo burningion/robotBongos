@@ -4,7 +4,9 @@
 //int pwmPin = 4; # using this as our noise generator for now
 int secondPinArduino = 2;
 int thirdPinArduino = 8;
-int fourthPinAruino = 7;
+int fourthPinArduino = 7;
+int fifthPinArduino = 14;
+
 int secondCow = 25;
 int lastBong = 24;
 int rimBong = 23;
@@ -13,7 +15,7 @@ int rightBong = 21;
 int firstCow = 20;
 
 
-bool touches[] = {false, false, false}; // initialize array for all touchy plants, default to off
+bool touches[] = {false, false, false, false}; // initialize array for all touchy plants, default to off
 
 noise noise(4);
 
@@ -97,9 +99,12 @@ void setup() {
   pinMode(thirdPinArduino, OUTPUT);
   digitalWrite(thirdPinArduino, LOW);
 
-  pinMode(fourthPinAruino, OUTPUT);
-  digitalWrite(fourthPinAruino, LOW);
+  pinMode(fourthPinArduino, OUTPUT);
+  digitalWrite(fourthPinArduino, LOW);
 
+  pinMode(fifthPinArduino, OUTPUT);
+  digitalWrite(fifthPinArduino, LOW);
+  
   usbMIDI.setHandleNoteOff(OnNoteOff);
   usbMIDI.setHandleNoteOn(OnNoteOn);
   analogWriteResolution(12);  
@@ -109,7 +114,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   usbMIDI.read();
-  //noise.generate(2);
+  noise.generate(2);
   
   if (touchRead(0) > 3500) {
     digitalWrite(secondPinArduino, HIGH);
@@ -142,20 +147,34 @@ void loop() {
   }
 
   if (touchRead(3) > 5000) {
-    digitalWrite(fourthPinAruino, HIGH);
+    digitalWrite(fourthPinArduino, HIGH);
     if (touches[2] == false) {  // do this so we don't send a bunch of notes when we're being touched.
       usbMIDI.sendNoteOn(112, 100, 2);
       touches[2] == true;
     }
   }
   else {
-    digitalWrite(fourthPinAruino, LOW);
+    digitalWrite(fourthPinArduino, LOW);
     if (touches[2] == true) {
       usbMIDI.sendNoteOff(112, 100, 2);
       touches[2] = false;
     }
   }
   
+  if (touchRead(15) > 6500) {
+    digitalWrite(fifthPinArduino, HIGH);
+    if (touches[3] == false) {
+      usbMIDI.sendNoteOn(114, 100, 2);
+      touches[3] = true;
+    }
+  }
+  else {
+    digitalWrite(fifthPinArduino, LOW);
+    if (touches[3] == true) {
+      usbMIDI.sendNoteOff(114, 100, 2);
+      touches[3] = false;
+    }
+  }
   //long start = millis();
   // throw a touchRead(pin) in here https://www.kickstarter.com/projects/paulstoffregen/teensy-30-32-bit-arm-cortex-m4-usable-in-arduino-a/posts (maybe control oscilator?)
   //long total1 =  cs_4_2.capacitiveSensor(30);
