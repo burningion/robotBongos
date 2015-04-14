@@ -7,6 +7,7 @@ Uses a Teensy LC, some MOSFETS, some plants, and some solenoids to make a roboti
 
 Drums <- Solenoids <-> MOSFETs / 24v Power Supply <-> Teensy <-> Arduino w/ DMX Shield <-> DMX Decoder / LEDs
 
+![Bongo Schematic](https://s3-us-west-2.amazonaws.com/kpkaiser/robotBongoSchematic.png)
 
 Initially this project ran on the Raspberry Pi. But in NYC I have a lot of Wireless interference, and I couldn't get consistent latency at any time other than the day. So I rewrote everything on the Teensy.
 
